@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "name": "Zwarte Trui",
+        "price": 29.99,
+        "image": "img/trui.png",
+        "category": "Kleding"
+    },
+    {
+        "id": 2,
+        "name": "Austronaut Trui",
+        "price": 29.99,
+        "image": "img/trui2.png",
+        "category": "Kleding"
+    },
+    {
+        "id": 3,
+        "name": "Zwart T-shirt",
+        "price": 19.99,
+        "image": "img/tshirt.png",
+        "category": "Kleding"
+    },
+    {
+        "id": 4,
+        "name": "Zwart T-shirt",
+        "price": 14.99,
+        "image": "img/tshirt2.png",
+        "category": "Kleding"
+    },
+    {
+        "id": 5,
+        "name": "Totebag Zwart",
+        "price": 9.99,
+        "image": "img/totebag.avif",
+        "category": "Tas"
+    },
+    {
+        "id": 6,
+        "name": "Totebag Beige",
+        "price": 9.99,
+        "image": "img/totebag2.avif",
+        "category": "Tas"
+    }
+]
