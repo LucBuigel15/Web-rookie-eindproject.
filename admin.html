@@ -36,7 +36,8 @@
             </div>
         </div>
 
-        <div class="container-fluid min-vh-100 pt-100">
+        <div class="container-fluid min-vh-100 pt-100" id="producten">
+            <h2>Producten</h2>
             <div class="container-fluid">
                 <table class="table" id="productTable">
                     <thead>
@@ -52,11 +53,13 @@
                 </table>
             </div>
 
-            <section class="container-fluid pt-100" id="producten">
+            <section class="container-fluid pt-100">
                 <h2>Product toevoegen</h2>
 
                 <input id="name" class="form-control mb-2" placeholder="Product naam" />
+                <input id="id" class="form-control mb-2" placeholder="Product ID" />
                 <input id="price" type="number" class="form-control mb-2" placeholder="Prijs" />
+                <input id="category" class="form-control mb-2" placeholder="Category" />
                 <input id="image" class="form-control mb-2" placeholder="Afbeelding URL" />
 
                 <button id="addProduct" class="btn btn-success">Toevoegen</button>
@@ -65,9 +68,11 @@
 
             <select class="form-select container-fluid mt-3 changeProduct" aria-label="Default select example">
                 <option selected>Selecteer Product</option>
-                <!-- <option value="1">One</option> -->
-                <!-- <option value="2">Two</option> -->
-                <!-- <option value="3">Three</option> -->
+                <input id="name" class="form-control mb-2 mt-2" placeholder="Product naam" />
+                <input id="id" class="form-control mb-2" placeholder="Product ID" />
+                <input id="price" type="number" class="form-control mb-2" placeholder="Prijs" />
+                <input id="category" class="form-control mb-2" placeholder="Category" />
+                <input id="image" class="form-control mb-2" placeholder="Afbeelding URL" />
             </select>
         </div>
 

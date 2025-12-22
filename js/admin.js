@@ -118,7 +118,7 @@ async function changeProduct() {
 
     products.forEach((product) => {
         select.innerHTML += `
-            <option value="${product.id}">${product.name}</option>
+            <option value="${product.id}">${product.name}, ${product.price}, ${product.image}, ${product.category}</option>
         `;
     });
 }
