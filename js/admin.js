@@ -33,27 +33,26 @@ function seeOrders() {
             const itemTotal = item.price * item.quantity;
             total += itemTotal;
             items += `<div class="d-flex justify-content-between">
-                <span>${item.name} x ${item.quantity}</span>
-                <span>€${itemTotal.toFixed(2)}</span>
-            </div>`;
+                    <span>${item.name} x ${item.quantity}</span>
+                    <span>€${itemTotal.toFixed(2)}</span>
+                </div>`;
         });
 
         list.innerHTML += `
-            <li class="list-group-item">
-                <strong>Order #${order.id}</strong><br>
-                <small>${order.date}</small>
-                <hr>
-                ${items}
-                <hr>
-                <strong>Totaal: €${total.toFixed(2)}</strong>
-            </li>
-        `;
+                <li class="list-group-item">
+                    <strong>Order #${order.id}</strong><br>
+                    <small>${order.date}</small>
+                    <hr>
+                    ${items}
+                    <hr>
+                    <strong>Totaal: €${total.toFixed(2)}</strong>
+                </li>
+            `;
     });
 }
 
 // Function voor inladen van producten en die dan in de localStorage te zetten.
 async function loadProducts() {
-    products = JSON.parse(localStorage.getItem("products")) || [];
     if (!products.length) {
         const response = await fetch("products.json");
         products = await response.json();
@@ -69,22 +68,27 @@ function renderProducts() {
 
     products.forEach((product) => {
         productTableBody.innerHTML += `
-            <tr>
-                <th>${product.id}</th>
-                <td>${product.name}</td>
-                <td>€${product.price.toFixed(2)}</td>
-                <td><img src="${product.image}" width="50"></td>
-                <td><button class="btn btn-danger btn-sm deleteProduct" data-id="${
-                    product.id
-                }">Verwijderen</button> </td>
-            </tr>
-        `;
+                <tr>
+                    <th>${product.id}</th>
+                    <td>${product.name}</td>
+                    <td>€${product.price.toFixed(2)}</td>
+                    <td><img src="${product.image}" width="50"></td>
+                    <td>
+                        <button class="btn btn-danger btn-sm deleteProduct" data-id="${product.id}">
+                            Verwijderen
+                        </button>
+                        <button class="btn btn-outline-secondary btn-sm changeProduct" data-bs-toggle="modal" data-bs-target="#exampleModal>
+                            Edit
+                        </button>
+                    </td>
+                </tr>
+            `;
 
         productSelect.innerHTML += `
-            <option value="${product.id}">
-                ${product.name} - €${product.price.toFixed(2)}
-            </option>
-        `;
+                <option value="${product.id}">
+                    ${product.name} - €${product.price.toFixed(2)}
+                </option>
+            `;
     });
 
     document.querySelectorAll(".deleteProduct").forEach((button) => {
@@ -119,6 +123,7 @@ document.getElementById("addProduct").addEventListener("click", () => {
 
 // Arrow functiom om de producten te resetten (Info uit de JSON opnieuw ophalen en die dan weer in de localStorage zetten.)
 document.getElementById("resetProducts").addEventListener("click", async () => {
+    localStorage.removeItem("products");
     const response = await fetch("products.json");
     products = await response.json();
     localStorage.setItem("products", JSON.stringify(products));
