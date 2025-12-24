@@ -1,43 +1,41 @@
-// Dark mode.
-
 const darkmodeBtn = document.querySelector(".darkmode");
+const productTableBody = document.querySelector("#productTable tbody");
+const productSelect = document.querySelector(".changeProduct");
 
-function applyTheme(theme) {
-    document.body.setAttribute("data-bs-theme", theme);
-}
+let products = JSON.parse(localStorage.getItem("products")) || [];
 
+// Dark mode
 darkmodeBtn.addEventListener("click", () => {
-    const current = document.body.getAttribute("data-bs-theme");
-    const next = current === "dark" ? "light" : "dark";
-    applyTheme(next);
-    localStorage.setItem("theme", next);
+    const theme = document.body.getAttribute("data-bs-theme") === "dark" ? "light" : "dark";
+    document.body.setAttribute("data-bs-theme", theme);
+    localStorage.setItem("theme", theme);
 });
 
-// Functie om orders te laten zien.
+const savedTheme = localStorage.getItem("theme") || "light";
+document.body.setAttribute("data-bs-theme", savedTheme);
+
+// Function om orders op te halen
 function seeOrders() {
     const list = document.querySelector(".list-group");
     const orders = JSON.parse(localStorage.getItem("orders")) || [];
-
     list.innerHTML = "";
 
-    if (orders.length === 0) {
-        list.innerHTML = `<li class="list-group-item">Geen orders</li>`;
+    if (!orders.length) {
+        list.innerHTML = "<li class='list-group-item'>Geen orders</li>";
         return;
     }
 
     orders.forEach((order) => {
-        let itemsHtml = "";
-        let orderTotal = 0;
+        let total = 0;
+        let items = "";
 
         order.items.forEach((item) => {
             const itemTotal = item.price * item.quantity;
-            orderTotal += itemTotal;
-            itemsHtml += `
-                <div class="d-flex justify-content-between">
-                    <span>${item.name} x ${item.quantity}</span>
-                    <span>€${itemTotal.toFixed(2)}</span>
-                </div>
-            `;
+            total += itemTotal;
+            items += `<div class="d-flex justify-content-between">
+                <span>${item.name} x ${item.quantity}</span>
+                <span>€${itemTotal.toFixed(2)}</span>
+            </div>`;
         });
 
         list.innerHTML += `
@@ -45,84 +43,87 @@ function seeOrders() {
                 <strong>Order #${order.id}</strong><br>
                 <small>${order.date}</small>
                 <hr>
-                ${itemsHtml}
+                ${items}
                 <hr>
-                <strong>Totaal: €${orderTotal.toFixed(2)}</strong>
+                <strong>Totaal: €${total.toFixed(2)}</strong>
             </li>
         `;
     });
 }
 
-let products = [];
-
-// Functie om producten te laten zien die momenteel op de website staan.
+// Function voor inladen van producten en die dan in de localStorage te zetten.
 async function loadProducts() {
-    const response = await fetch("products.json");
-    products = await response.json();
-    renderTable();
+    products = JSON.parse(localStorage.getItem("products")) || [];
+    if (!products.length) {
+        const response = await fetch("products.json");
+        products = await response.json();
+        localStorage.setItem("products", JSON.stringify(products));
+    }
+    renderProducts();
 }
 
-function renderTable() {
-    const tbody = document.querySelector("#productTable tbody");
-    tbody.innerHTML = "";
+// Render products in table & select
+function renderProducts() {
+    productTableBody.innerHTML = "";
+    productSelect.innerHTML = "";
 
     products.forEach((product) => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-            <th scope="row">${product.id}</th>
-            <td>${product.name}</td>
-            <td>€${product.price.toFixed(2)}</td>
-            <td><img src="${product.image}" alt="${product.name}" width="50"></td>
-            <td>${product.category}</td>
+        productTableBody.innerHTML += `
+            <tr>
+                <th>${product.id}</th>
+                <td>${product.name}</td>
+                <td>€${product.price.toFixed(2)}</td>
+                <td><img src="${product.image}" width="50"></td>
+                <td><button class="btn btn-danger btn-sm deleteProduct" data-id="${
+                    product.id
+                }">Verwijderen</button> </td>
+            </tr>
         `;
-        tbody.appendChild(tr);
+
+        productSelect.innerHTML += `
+            <option value="${product.id}">
+                ${product.name} - €${product.price.toFixed(2)}
+            </option>
+        `;
+    });
+
+    document.querySelectorAll(".deleteProduct").forEach((button) => {
+        button.addEventListener("click", () => {
+            const id = Number(button.dataset.id);
+            products = products.filter((p) => p.id !== id);
+            localStorage.setItem("products", JSON.stringify(products));
+            renderProducts();
+        });
     });
 }
 
+// Product toevoegen.
 document.getElementById("addProduct").addEventListener("click", () => {
     const name = document.getElementById("name").value;
-    const price = parseFloat(document.getElementById("price").value);
+    const price = Number(document.getElementById("price").value);
     const image = document.getElementById("image").value;
 
-    if (!name || !isFinite(price) || !image) {
-        alert("Vul alle velden correct in!");
-        return;
-    }
+    if (!name || !price || !image) return alert("Vul alles in");
 
-    const newProduct = {
-        id: products.length + 1,
+    products.push({
+        id: products.length ? Math.max(...products.map((p) => p.id)) + 1 : 1,
         name,
         price,
         image,
         category: "Onbekend",
-    };
-
-    products.push(newProduct);
-    renderTable();
-
-    document.getElementById("name").value = "";
-    document.getElementById("price").value = "";
-    document.getElementById("image").value = "";
-});
-
-document.getElementById("resetProducts").addEventListener("click", () => {
-    loadProducts();
-});
-
-async function changeProduct() {
-    await loadProducts();
-    console.log(products);
-
-    const select = document.querySelector(".changeProduct");
-    select.innerHTML = "";
-
-    products.forEach((product) => {
-        select.innerHTML += `
-            <option value="${product.id}">${product.name}, ${product.price}, ${product.image}, ${product.category}</option>
-        `;
     });
-}
 
-changeProduct();
+    localStorage.setItem("products", JSON.stringify(products));
+    renderProducts();
+});
+
+// Arrow functiom om de producten te resetten (Info uit de JSON opnieuw ophalen en die dan weer in de localStorage zetten.)
+document.getElementById("resetProducts").addEventListener("click", async () => {
+    const response = await fetch("products.json");
+    products = await response.json();
+    localStorage.setItem("products", JSON.stringify(products));
+    renderProducts();
+});
+
 loadProducts();
 seeOrders();
