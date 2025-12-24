@@ -1,6 +1,5 @@
 const darkmodeBtn = document.querySelector(".darkmode");
 const productTableBody = document.querySelector("#productTable tbody");
-const productSelect = document.querySelector(".changeProduct");
 
 let products = JSON.parse(localStorage.getItem("products")) || [];
 
@@ -33,21 +32,21 @@ function seeOrders() {
             const itemTotal = item.price * item.quantity;
             total += itemTotal;
             items += `<div class="d-flex justify-content-between">
-                    <span>${item.name} x ${item.quantity}</span>
-                    <span>€${itemTotal.toFixed(2)}</span>
-                </div>`;
+                <span>${item.name} x ${item.quantity}</span>
+                <span>€${itemTotal.toFixed(2)}</span>
+            </div>`;
         });
 
         list.innerHTML += `
-                <li class="list-group-item">
-                    <strong>Order #${order.id}</strong><br>
-                    <small>${order.date}</small>
-                    <hr>
-                    ${items}
-                    <hr>
-                    <strong>Totaal: €${total.toFixed(2)}</strong>
-                </li>
-            `;
+            <li class="list-group-item">
+                <strong>Order #${order.id}</strong><br>
+                <small>${order.date}</small>
+                <hr>
+                ${items}
+                <hr>
+                <strong>Totaal: €${total.toFixed(2)}</strong>
+            </li>
+        `;
     });
 }
 
@@ -61,34 +60,30 @@ async function loadProducts() {
     renderProducts();
 }
 
-// Render products in table & select
+// Render products in table
 function renderProducts() {
     productTableBody.innerHTML = "";
-    productSelect.innerHTML = "";
 
     products.forEach((product) => {
         productTableBody.innerHTML += `
-                <tr>
-                    <th>${product.id}</th>
-                    <td>${product.name}</td>
-                    <td>€${product.price.toFixed(2)}</td>
-                    <td><img src="${product.image}" width="50"></td>
-                    <td>
-                        <button class="btn btn-danger btn-sm deleteProduct" data-id="${product.id}">
-                            Verwijderen
-                        </button>
-                        <button class="btn btn-outline-secondary btn-sm changeProduct" data-bs-toggle="modal" data-bs-target="#exampleModal>
-                            Edit
-                        </button>
-                    </td>
-                </tr>
-            `;
-
-        productSelect.innerHTML += `
-                <option value="${product.id}">
-                    ${product.name} - €${product.price.toFixed(2)}
-                </option>
-            `;
+            <tr>
+                <th>${product.id}</th>
+                <td>${product.name}</td>
+                <td>€${product.price.toFixed(2)}</td>
+                <td><img src="${product.image}" width="50"></td>
+                <td>
+                    <button class="btn btn-danger btn-sm deleteProduct" data-id="${product.id}">
+                        Verwijderen
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm editProduct"
+                        data-id="${product.id}"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
+                        Edit
+                    </button>
+                </td>
+            </tr>
+        `;
     });
 
     document.querySelectorAll(".deleteProduct").forEach((button) => {
@@ -128,6 +123,49 @@ document.getElementById("resetProducts").addEventListener("click", async () => {
     products = await response.json();
     localStorage.setItem("products", JSON.stringify(products));
     renderProducts();
+});
+
+let currentEditId = null;
+
+document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("editProduct")) {
+        currentEditId = Number(e.target.dataset.id);
+        const product = products.find((p) => p.id === currentEditId);
+
+        document.querySelector(".productName").textContent = product.name;
+        document.getElementById("editName").value = product.name;
+        document.getElementById("editPrice").value = product.price;
+        document.getElementById("editImage").value = product.image;
+        document.getElementById("imagePreview").src = product.image;
+    }
+});
+
+document.getElementById("editImage").addEventListener("input", (e) => {
+    document.getElementById("imagePreview").src = e.target.value;
+});
+
+document.getElementById("saveEdit").addEventListener("click", () => {
+    if (currentEditId === null) return;
+
+    const name = document.getElementById("editName").value;
+    const price = Number(document.getElementById("editPrice").value);
+    const image = document.getElementById("editImage").value;
+
+    if (!name || !price || !image) {
+        alert("Vul alles in");
+        return;
+    }
+
+    const product = products.find((p) => p.id === currentEditId);
+    product.name = name;
+    product.price = price;
+    product.image = image;
+
+    localStorage.setItem("products", JSON.stringify(products));
+    renderProducts();
+
+    const modal = bootstrap.Modal.getInstance(document.getElementById("exampleModal"));
+    modal.hide();
 });
 
 loadProducts();

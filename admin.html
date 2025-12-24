@@ -55,8 +55,6 @@
         <div class="container-fluid min-vh-100 pt-100" id="producten">
             <h2>Producten</h2>
 
-            <select class="form-select changeProduct mb-3"></select>
-
             <div class="container-fluid">
                 <table class="table" id="productTable">
                     <thead>
@@ -84,26 +82,29 @@
             </section>
         </div>
 
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Launch demo modal
-        </button>
-
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <h1 class="modal-title fs-5 productName" id="exampleModalLabel">Modal title</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">...</div>
+                    <div class="modal-body">
+                        <input id="editName" class="form-control mb-2" />
+                        <input id="editPrice" type="number" class="form-control mb-2" />
+                        <input id="editImage" class="form-control mb-2" />
+                        <img id="imagePreview" class="img-fluid mb-3" />
+                    </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" id="saveEdit">Save</button>
                     </div>
                 </div>
             </div>
         </div>
+
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
