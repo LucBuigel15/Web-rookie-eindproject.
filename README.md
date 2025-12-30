@@ -39,5 +39,5 @@ De webshop bevat:
 
 ## Bekijken.
 
-Ook is de website te zien via de URL.
-De url hiervoor is luc-webrookie.netlify.app
+Ook is de website te zien via de URL.  
+De url hiervoor is [luc-webrookie.netlify.app](https://luc-webrookie.netlify.app)
