@@ -36,3 +36,8 @@ De webshop bevat:
 -   Toevoegen/verweideren van producten op admin pagina.
 -   Orders zien op admin pagina.
 -   Responsief design voor desktop en mobiel.
+
+## Bekijken.
+
+Ook is de website te zien via de URL.
+De url hiervoor is luc-webrookie.netlify.app
