@@ -6,24 +6,30 @@ Dit is het eindproject voor Web-Rookie. Het is een eenvoudige webshop gebouwd me
 
 De webshop bevat:
 
--   Productpagina.
--   Winkelwagen functionaliteit.
--   Responsieve layout.
--   Standaard frontend interactiviteit met JavaScript.
+-   Productpagina
+-   Winkelwagenfunctionaliteit
+-   Responsieve layout
+-   Standaard frontend interactiviteit met JavaScript
 
 ---
 
-## Technologieëgen
+## Technologieën
 
--   HTML: structuur van de website.
--   CSS: Styling naast bootstrap.
--   JavaScript: Functionaliteit van de winkelwagen en admin pagina.
--   Bootstrap 5: (via CDN) Responsief design en componenten.
+-   **HTML**: structuur van de website
+-   **CSS**: styling naast Bootstrap
+-   **JavaScript**: functionaliteit van de winkelwagen en adminpagina
+-   **Bootstrap 5**: (via CDN) responsief design en componenten
+
+---
 
 ## Installatie
 
-1. Clone de repository.
-   git clone git@github.com:LucBuigel15/Web-rookie-eindproject..git
+1. Clone de repository:
+
+```bash
+git clone git@github.com:LucBuigel15/Web-rookie-eindproject.git
+```
+
 2. Open index.html in een webbrowser:
    Dubbelklik op index.html of open via de browser.
    (Geen extra dependencies nodig, Bootstrap wordt via de CDN geladen.)
@@ -39,5 +45,5 @@ De webshop bevat:
 
 ## Bekijken.
 
-Ook is de website te zien via de URL.  
+Ook is de website te zien via de URL.
 De url hiervoor is [luc-webrookie.netlify.app](https://luc-webrookie.netlify.app)
