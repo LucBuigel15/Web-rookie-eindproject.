@@ -75,7 +75,7 @@ function renderProducts() {
                     <button class="btn btn-danger btn-sm deleteProduct" data-id="${product.id}">
                         Verwijderen
                     </button>
-                    <button class="btn btn-outline-secondary btn-sm editProduct"
+                    <button class="btn btn-outline-secondary btn-sm editProduct mt-2"
                         data-id="${product.id}"
                         data-bs-toggle="modal"
                         data-bs-target="#exampleModal">
