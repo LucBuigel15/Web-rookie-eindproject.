@@ -1,5 +1,6 @@
 const darkmodeBtn = document.querySelector(".darkmode");
 const productTableBody = document.querySelector("#productTable tbody");
+const bootstrap = window.bootstrap;
 
 let products = JSON.parse(localStorage.getItem("products")) || [];
 
@@ -7,7 +8,6 @@ darkmodeBtn.addEventListener("click", () => {
     const theme = document.body.getAttribute("data-bs-theme") === "dark" ? "light" : "dark";
     document.body.setAttribute("data-bs-theme", theme);
     localStorage.setItem("theme", theme);
-    return undefined;
 });
 
 const savedTheme = localStorage.getItem("theme") || "light";
@@ -62,12 +62,13 @@ function renderProducts() {
     productTableBody.innerHTML = "";
 
     products.forEach((product) => {
+        const imgSrc = product.image || "https://via.placeholder.com/50";
         productTableBody.innerHTML += `
             <tr>
                 <th>${product.id}</th>
                 <td>${product.name}</td>
                 <td>€${product.price.toFixed(2)}</td>
-                <td><img src="${product.image}" width="50" alt="${product.name}"></td>
+                <td><img src="${imgSrc}" width="50" alt="${product.name}"></td>
                 <td>
                     <button class="btn btn-danger btn-sm deleteProduct" data-id="${product.id}">
                         Verwijderen
@@ -89,7 +90,6 @@ function renderProducts() {
             products = products.filter((p) => p.id !== id);
             localStorage.setItem("products", JSON.stringify(products));
             renderProducts();
-            return undefined;
         });
     });
 }
@@ -111,7 +111,6 @@ document.getElementById("addProduct").addEventListener("click", () => {
 
     localStorage.setItem("products", JSON.stringify(products));
     renderProducts();
-    return undefined;
 });
 
 document.getElementById("resetProducts").addEventListener("click", async () => {
@@ -120,7 +119,6 @@ document.getElementById("resetProducts").addEventListener("click", async () => {
     products = await response.json();
     localStorage.setItem("products", JSON.stringify(products));
     renderProducts();
-    return undefined;
 });
 
 let currentEditId = null;
@@ -134,14 +132,12 @@ document.addEventListener("click", (e) => {
         document.getElementById("editName").value = product.name;
         document.getElementById("editPrice").value = product.price;
         document.getElementById("editImage").value = product.image;
-        document.getElementById("imagePreview").src = product.image;
-        return undefined;
+        document.getElementById("imagePreview").src = product.image || "https://via.placeholder.com/150";
     }
 });
 
 document.getElementById("editImage").addEventListener("input", (e) => {
-    document.getElementById("imagePreview").src = e.target.value;
-    return undefined;
+    document.getElementById("imagePreview").src = e.target.value || "https://via.placeholder.com/150";
 });
 
 document.getElementById("saveEdit").addEventListener("click", () => {
@@ -166,7 +162,6 @@ document.getElementById("saveEdit").addEventListener("click", () => {
 
     const modal = bootstrap.Modal.getInstance(document.getElementById("exampleModal"));
     modal.hide();
-    return undefined;
 });
 
 loadProducts();
