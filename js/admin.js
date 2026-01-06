@@ -7,6 +7,7 @@ darkmodeBtn.addEventListener("click", () => {
     const theme = document.body.getAttribute("data-bs-theme") === "dark" ? "light" : "dark";
     document.body.setAttribute("data-bs-theme", theme);
     localStorage.setItem("theme", theme);
+    return undefined;
 });
 
 const savedTheme = localStorage.getItem("theme") || "light";
@@ -88,6 +89,7 @@ function renderProducts() {
             products = products.filter((p) => p.id !== id);
             localStorage.setItem("products", JSON.stringify(products));
             renderProducts();
+            return undefined;
         });
     });
 }
@@ -97,7 +99,7 @@ document.getElementById("addProduct").addEventListener("click", () => {
     const price = Number(document.getElementById("price").value);
     const image = document.getElementById("image").value;
 
-    if (!name || !image || isNaN(price)) return alert("Vul alles in");
+    if (!name || !image || Number.isNaN(price)) return alert("Vul alles in");
 
     products.push({
         id: products.length ? Math.max(...products.map((p) => p.id)) + 1 : 1,
@@ -109,6 +111,7 @@ document.getElementById("addProduct").addEventListener("click", () => {
 
     localStorage.setItem("products", JSON.stringify(products));
     renderProducts();
+    return undefined;
 });
 
 document.getElementById("resetProducts").addEventListener("click", async () => {
@@ -117,6 +120,7 @@ document.getElementById("resetProducts").addEventListener("click", async () => {
     products = await response.json();
     localStorage.setItem("products", JSON.stringify(products));
     renderProducts();
+    return undefined;
 });
 
 let currentEditId = null;
@@ -131,11 +135,13 @@ document.addEventListener("click", (e) => {
         document.getElementById("editPrice").value = product.price;
         document.getElementById("editImage").value = product.image;
         document.getElementById("imagePreview").src = product.image;
+        return undefined;
     }
 });
 
 document.getElementById("editImage").addEventListener("input", (e) => {
     document.getElementById("imagePreview").src = e.target.value;
+    return undefined;
 });
 
 document.getElementById("saveEdit").addEventListener("click", () => {
@@ -145,7 +151,7 @@ document.getElementById("saveEdit").addEventListener("click", () => {
     const price = Number(document.getElementById("editPrice").value);
     const image = document.getElementById("editImage").value;
 
-    if (!name || !image || isNaN(price)) {
+    if (!name || !image || Number.isNaN(price)) {
         alert("Vul alles in");
         return;
     }
@@ -160,6 +166,7 @@ document.getElementById("saveEdit").addEventListener("click", () => {
 
     const modal = bootstrap.Modal.getInstance(document.getElementById("exampleModal"));
     modal.hide();
+    return undefined;
 });
 
 loadProducts();
