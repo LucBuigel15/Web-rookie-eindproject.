@@ -99,7 +99,10 @@ document.getElementById("addProduct").addEventListener("click", () => {
     const price = Number(document.getElementById("price").value);
     const image = document.getElementById("image").value;
 
-    if (!name || !image || Number.isNaN(price)) return alert("Vul alles in");
+    if (!name || !image || Number.isNaN(price)) {
+        alert("Vul alles in");
+        return;
+    }
 
     products.push({
         id: products.length ? Math.max(...products.map((p) => p.id)) + 1 : 1,
