@@ -3,7 +3,6 @@ const productTableBody = document.querySelector("#productTable tbody");
 
 let products = JSON.parse(localStorage.getItem("products")) || [];
 
-// Dark mode
 darkmodeBtn.addEventListener("click", () => {
     const theme = document.body.getAttribute("data-bs-theme") === "dark" ? "light" : "dark";
     document.body.setAttribute("data-bs-theme", theme);
@@ -13,7 +12,6 @@ darkmodeBtn.addEventListener("click", () => {
 const savedTheme = localStorage.getItem("theme") || "light";
 document.body.setAttribute("data-bs-theme", savedTheme);
 
-// Function om orders op te halen
 function seeOrders() {
     const list = document.querySelector(".list-group");
     const orders = JSON.parse(localStorage.getItem("orders")) || [];
@@ -50,7 +48,6 @@ function seeOrders() {
     });
 }
 
-// Function voor inladen van producten en die dan in de localStorage te zetten.
 async function loadProducts() {
     if (!products.length) {
         const response = await fetch("products.json");
@@ -60,7 +57,6 @@ async function loadProducts() {
     renderProducts();
 }
 
-// Render products in table
 function renderProducts() {
     productTableBody.innerHTML = "";
 
@@ -70,7 +66,7 @@ function renderProducts() {
                 <th>${product.id}</th>
                 <td>${product.name}</td>
                 <td>€${product.price.toFixed(2)}</td>
-                <td><img src="${product.image}" width="50"></td>
+                <td><img src="${product.image}" width="50" alt="${product.name}"></td>
                 <td>
                     <button class="btn btn-danger btn-sm deleteProduct" data-id="${product.id}">
                         Verwijderen
@@ -96,13 +92,12 @@ function renderProducts() {
     });
 }
 
-// Product toevoegen.
 document.getElementById("addProduct").addEventListener("click", () => {
     const name = document.getElementById("name").value;
     const price = Number(document.getElementById("price").value);
     const image = document.getElementById("image").value;
 
-    if (!name || !price || !image) return alert("Vul alles in");
+    if (!name || !image || isNaN(price)) return alert("Vul alles in");
 
     products.push({
         id: products.length ? Math.max(...products.map((p) => p.id)) + 1 : 1,
@@ -116,7 +111,6 @@ document.getElementById("addProduct").addEventListener("click", () => {
     renderProducts();
 });
 
-// Arrow functiom om de producten te resetten (Info uit de JSON opnieuw ophalen en die dan weer in de localStorage zetten.)
 document.getElementById("resetProducts").addEventListener("click", async () => {
     localStorage.removeItem("products");
     const response = await fetch("products.json");
@@ -151,7 +145,7 @@ document.getElementById("saveEdit").addEventListener("click", () => {
     const price = Number(document.getElementById("editPrice").value);
     const image = document.getElementById("editImage").value;
 
-    if (!name || !price || !image) {
+    if (!name || !image || isNaN(price)) {
         alert("Vul alles in");
         return;
     }
