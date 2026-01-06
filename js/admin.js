@@ -95,12 +95,12 @@ function renderProducts() {
 }
 
 document.getElementById("addProduct").addEventListener("click", () => {
-    const name = document.getElementById("name").value;
+    const name = document.getElementById("name").value.trim();
     const price = Number(document.getElementById("price").value);
-    const image = document.getElementById("image").value;
+    const image = document.getElementById("image").value.trim();
 
-    if (!name || !image || Number.isNaN(price)) {
-        alert("Vul alles in");
+    if (!name || !image || Number.isNaN(price) || price <= 0) {
+        alert("Naam en afbeelding mogen niet leeg zijn en prijs moet groter zijn dan 0");
         return;
     }
 

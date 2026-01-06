@@ -18,7 +18,7 @@ async function getData() {
                 <div class="card h-100">
                     <img src="${product.image}" class="card-img-top" alt="${product.name}">
                     <div class="card-body text-center">
-                        <h5 class="card-title">${product.name}</h5>
+                        <h2 class="card-title" style="font-size: 20px">${product.name}</h2>
                         <p class="card-text">€${product.price}</p>
                         <button class="btn btn-outline-success add-to-cart" data-id="${product.id}">
                             In winkelwagen

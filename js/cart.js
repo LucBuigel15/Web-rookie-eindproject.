@@ -23,14 +23,7 @@ function renderCart() {
                         </div>
                     </div>
                     <div class="d-flex align-items-center gap-2">
-                        <button class="btn" onclick="changeQuantity(${item.id}, -${item.quantity})">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                            fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5
-                                0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646
-                                x2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-                            </svg>
-                        </button>
+                        <button class="btn" onclick="changeQuantity(${item.id}, -${item.quantity})">✕</button>
                         <button class="btn btn-outline-secondary" onclick="changeQuantity(${item.id}, -1)">-</button>
                         <span>${item.quantity}</span>
                         <button class="btn btn-outline-secondary" onclick="changeQuantity(${item.id}, 1)">+</button>
@@ -41,6 +34,8 @@ function renderCart() {
     });
 
     totalContainer.textContent = `Totaal: €${total.toFixed(2)}`;
+
+    updateOrderButton(cart);
 }
 
 function changeQuantity(id, change) {
@@ -59,7 +54,6 @@ function changeQuantity(id, change) {
 
 orderBtn.addEventListener("click", () => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    if (cart.length === 0) return;
 
     let orders = JSON.parse(localStorage.getItem("orders")) || [];
 
@@ -99,5 +93,20 @@ darkmodeBtn.addEventListener("click", () => {
 
 const savedTheme = localStorage.getItem("theme") || "light";
 applyTheme(savedTheme);
+
+function updateOrderButton(cart) {
+    const empty = cart.length === 0;
+
+    orderBtn.disabled = empty;
+    orderBtn.setAttribute("aria-disabled", String(empty));
+
+    if (empty) {
+        orderBtn.removeAttribute("data-bs-toggle");
+        orderBtn.removeAttribute("data-bs-target");
+    } else {
+        orderBtn.setAttribute("data-bs-toggle", "modal");
+        orderBtn.setAttribute("data-bs-target", "#staticBackdrop");
+    }
+}
 
 renderCart();
