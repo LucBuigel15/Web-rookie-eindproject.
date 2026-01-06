@@ -23,9 +23,11 @@ function renderCart() {
                         </div>
                     </div>
                     <div class="d-flex align-items-center gap-2">
-                    <button class="btn " onclick="changeQuantity(${item.id}, -${item.quantity})"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-</svg></button>
+                        <button class="btn" onclick="changeQuantity(${item.id}, -${item.quantity})">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                            </svg>
+                        </button>
                         <button class="btn btn-outline-secondary" onclick="changeQuantity(${item.id}, -1)">-</button>
                         <span>${item.quantity}</span>
                         <button class="btn btn-outline-secondary" onclick="changeQuantity(${item.id}, 1)">+</button>
@@ -54,7 +56,6 @@ function changeQuantity(id, change) {
 
 orderBtn.addEventListener("click", () => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
     if (cart.length === 0) return;
 
     let orders = JSON.parse(localStorage.getItem("orders")) || [];
@@ -70,9 +71,13 @@ orderBtn.addEventListener("click", () => {
 
     renderCart();
     orderMessage.textContent = "Ordered ✅";
+});
 
-    const modal = new bootstrap.Modal(document.getElementById("staticBackdrop"));
-    modal.show();
+const modalEl = document.getElementById("staticBackdrop");
+
+modalEl.addEventListener("hidden.bs.modal", () => {
+    document.body.classList.remove("modal-open");
+    document.querySelectorAll(".modal-backdrop").forEach((e) => e.remove());
 });
 
 const darkmodeBtn = document.querySelector(".darkmode");
